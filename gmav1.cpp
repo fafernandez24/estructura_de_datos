@@ -9,8 +9,7 @@ using namespace std;
 
 // TIPOS DE STRUCTS
 
-// STRUCT PARA LAS CASILLAS
-struct Casillas{
+struct Casillas{ // STRUCT PARA LAS CASILLAS
 
     string region;
     int jugadores;
@@ -19,8 +18,7 @@ struct Casillas{
     Casillas *prox;
 };
 
-// STRUCT PARA LAS CARACTERISTICAS DE LA REGION
-struct CaracteristicasRegion{
+struct CaracteristicasRegion{ // STRUCT PARA LAS CARACTERISTICAS DE LA REGION
 
     int temperature;
     string vegetation;
@@ -31,16 +29,17 @@ struct CaracteristicasRegion{
 
 };
 
-//STRUCT PARA LOS DESASTRES NATURALES
-struct DesafiosAmbientales{
+struct DesafiosAmbientales{ //STRUCT PARA LOS DESASTRES NATURALES
 
-    int desafioamb;
+    string desafioamb;
+    int tipodesafio;
+
+    DesafiosAmbientales *prox;
     Casillas *desafios;
 
 };
 
-// STRUCT DE LOS JUGADORES
-struct Jugadores{
+struct Jugadores{ // STRUCT DE LOS JUGADORES
 
     string nombre;
     int njugador;
@@ -52,8 +51,7 @@ struct Jugadores{
 
 };
 
-// STRUCT DE LAS CLASES DE LOS JUGADORES
-struct Tipo{
+struct Tipo{ // STRUCT DE LAS CLASES DE LOS JUGADORES
 
     string clase;
     string descripcion;
@@ -75,10 +73,26 @@ Casillas* CrearCasilla( string zona, int posicion){
     tablero -> jugadores = 0;
     tablero -> posicion = posicion;
 
+    // Nodo que apunta a la siguiente casilla;
     tablero -> prox = NULL;
 
     return tablero;
 };
+
+DesafiosAmbientales* CrearDesafioAmbiental( string desafio, int ndesafio, Casillas **casilla){
+
+    DesafiosAmbientales *nuevodesafio = new DesafiosAmbientales;
+
+    nuevodesafio -> desafioamb = desafio;
+    nuevodesafio -> tipodesafio = ndesafio;
+    
+    nuevodesafio -> prox = NULL;
+
+    // Enlace que lo une a la casilla correspondiente;
+    nuevodesafio -> desafios = *casilla;
+
+    return nuevodesafio;
+}
 
 Jugadores* CrearJugadores (string nick, int numjugador){
 
@@ -89,7 +103,10 @@ Jugadores* CrearJugadores (string nick, int numjugador){
     jugador -> dinero = 200;
     jugador -> leam = 0;
 
+    // Nodo que apunta al siguiente jugador;
     jugador -> proxPlayer = NULL;
+
+    // Enlace entre los jugadores y las casillas;
     jugador -> Jugadores = NULL;
 
     return jugador;
@@ -118,6 +135,10 @@ bool ListaVaciaCaracteristicasRegion(CaracteristicasRegion *caracteristica){
     return caracteristica == NULL;
 }
 
+bool ListaVaciaDesafiosAmbientales(DesafiosAmbientales *desastre){
+    return desastre == NULL;
+}
+
 bool ListaVaciaPlayers(Jugadores *jugadores){
     return jugadores == NULL;
 }
@@ -126,16 +147,79 @@ bool ListaVaciaTipo(Tipo *tipo){
     return tipo == NULL;
 }
 
-// VALIDACIONES
+bool ValidarNJugadores( string numjugadores){
 
-bool ValidarNJugadores( int numjugadores){
-    if (numjugadores < 1 || numjugadores > 4)
-        return false;
-    else
+    if (numjugadores == "1")
         return true;
+
+    if (numjugadores == "2")
+        return true;
+
+    if (numjugadores == "3")
+        return true;
+
+    if (numjugadores == "4")
+        return true;
+
+    else
+        return false;
 }
 
-// FUNCIONES NORMALES
+bool PantallaInicio(){ // PANTALLA DE INICIO;
+
+    string inicio;
+
+    cout << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << endl;
+    cout << char(176) << char(71) << char(176) << char(85) << char(176) << char(65) << char(176) << char(82) << char(176) << char(68) << char(176) << char(73) << char(176) << char(65) << char(176) << char(78) << char(176) << char(69) << char(176) << char(83) << char(176) << char(32) << char(176) << char(68) << char(176) << char(69) << char(176) << char(76) << char(176) << endl;
+    cout << char(176) << char(77) << char(176) << char(69) << char(176) << char(68) << char(176) << char(73) << char(176) << char(79) << char(176) << char(32) << char(176) << char(65) << char(176) << char(77) << char(176) << char(66) << char(176) << char(73) << char(176) << char(69) << char(176) << char(78) << char(176) << char(84) << char(176) << char(69) << char(176) << endl;
+    cout << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << char(177) << char(176) << endl;
+
+    cout << "=============================" << endl;
+    cout << "INGRESAR START: ";
+    cin >> inicio;
+
+    if (inicio == "start")
+        return true;
+
+    if (inicio == "START")
+        return true;
+    else
+        return false;
+
+    }
+
+// FUNCIONES DE TIPO ENTERO
+
+int CantidadJugadores(string numjugadores){
+
+    if (numjugadores == "1")
+        return 1;
+    
+    if (numjugadores == "2")
+        return 2;
+
+    if (numjugadores == "3")
+        return 3;
+
+    if (numjugadores == "4")
+        return 4;
+
+    return 0;
+}
+
+int CantidadTurno(Jugadores *jugador){
+
+    Jugadores *aux = jugador;
+    int contador = 0;
+
+    while (aux != NULL){
+        aux = aux -> proxPlayer;
+        contador++;
+    }
+
+    return contador;
+
+}
 
 int Turno(Jugadores *jugador){
 
@@ -154,7 +238,7 @@ int Turno(Jugadores *jugador){
     if (aux -> njugador == 4)
         turno = 4;
 
- return turno;
+    return turno;
 
 }
 
@@ -191,18 +275,34 @@ void InsertarUltimoCasillas(Casillas **casilla, string zona, int posicion){
     }
 }
 
-void MostrarPersonajes(Jugadores *personajes){
+void InsertarUltimoDesastreAmbiental(string desastrenatural, int tipodesafio, Casillas **casilla, DesafiosAmbientales **desafio){
+
+    DesafiosAmbientales *aux = *desafio;
+    DesafiosAmbientales *creardesafio = CrearDesafioAmbiental(desastrenatural, tipodesafio, *&casilla);
+
+    if (ListaVaciaDesafiosAmbientales(*desafio))
+        aux = creardesafio;
+
+    else{
+
+        while (aux -> prox != NULL){
+            aux = aux -> prox;
+        }
+
+        aux -> prox = creardesafio;
+
+    }
+}
+
+void MostrarPersonajes(Jugadores *personajes){ //PROCEDIMIENTO PARA MOSTRAR A TODOS LOS PERSONAJES;
 
     Jugadores *mover1;
-    //Tipo *mover2;
 
     if (!ListaVaciaPlayers(personajes)){
 
         mover1 = personajes;
 
         while (mover1 != NULL){
-
-            //bool bol = false;
 
             cout << "-------------------------------" << endl;
             cout << "Nick name: " << mover1 -> nombre <<endl;
@@ -215,27 +315,6 @@ void MostrarPersonajes(Jugadores *personajes){
 
             mover1 = mover1 -> proxPlayer;
 
-         /*   mover2 = clases;
-
-            if (mover2 != NULL){
-
-                cout << "CARACTERISTICAS" << endl;
-                cout << "-------------------------------" << endl;
-
-                while (bol == false){
-
-                    cout << " - Clase: " << mover2 -> clase << endl;
-                    cout << " - Fortalezas: " << mover2 -> descripcion << endl;
-                    cout << " - Debilidades: " << mover2 -> habilidad << endl;
-
-                }
-            }
-
-            else
-                cout << "No tiene una clase asignada!" << endl;
-
-        */
-
             cout << "-------------------------------" << endl;
         }
     }
@@ -244,32 +323,52 @@ void MostrarPersonajes(Jugadores *personajes){
 
 }
 
+void Mostrar1Personaje(Jugadores *personajes, int x ){ // PROCEDIMIENTO PARA MOSTRAR UN PERSONAJE;
+
+    Jugadores *mover1;
+
+    if (!ListaVaciaPlayers(personajes)){
+
+        mover1 = personajes;
+
+        while (mover1 -> njugador != x){
+            mover1 = mover1 -> proxPlayer;
+        }
+
+        if (mover1 -> njugador == x){
+            cout << "-------------------------------" << endl;
+            cout << "Nick name: " << mover1 -> nombre <<endl;
+            cout << "-------------------------------" << endl;
+            
+            cout << "JUGADOR #" << mover1 -> njugador << endl;
+            cout << "Dinero: " << mover1 -> dinero << endl;
+            cout << "Nivel ambiental: " << mover1 -> leam << endl;
+            cout << "-------------------------------" << endl;
+
+        }
+        
+    }
+}
+
 void InsertarUltimoPlayer(Jugadores **personajes, string nick, int playerN){
 
     /* Insertar personajes. */
 
-    int contador = 0;
-
     Jugadores *insertJugador = CrearJugadores(nick, playerN);
     Jugadores *aux = NULL;
-    Jugadores *inicio = NULL;
 
     if (ListaVaciaPlayers(*personajes))
         *personajes = insertJugador;
+
     else{
         aux = *personajes;
-        inicio = *personajes;
 
         while (aux -> proxPlayer != NULL){
             aux = aux -> proxPlayer;
-            contador += 1;
         }
 
         aux -> proxPlayer = insertJugador;
 
-        if (contador == 3 ){
-            aux -> proxPlayer = inicio;
-        }
     }
 
 }
@@ -284,7 +383,43 @@ void InsertarUltimoClase(Tipo **clasejugador,  Jugadores *personaje, string clas
 
 }
 
-void InsertarClases(Jugadores **jugador){
+void InsertarDesastre(Casillas **casillas){
+
+    Casillas *aux = NULL;
+
+    string desastre = "";
+    int ndesafio = 0;
+
+    DesafiosAmbientales *desastrenatural = NULL;
+
+    if (!ListaVaciaCasillas(*casillas)){
+
+        aux = *casillas;
+
+        if ( aux -> posicion == 18 || aux -> posicion == 19 || aux -> posicion == 38 || aux -> posicion == 39 ){
+            desastre = "avalancha";
+            ndesafio = 1;
+        }
+
+        else if ( aux -> posicion == 360 || aux -> posicion == 361 || aux -> posicion == 380 || aux -> posicion == 381 ){
+            desastre = "sequia";
+            ndesafio = 2;
+        }
+
+        else if ( aux -> posicion == 378 || aux -> posicion == 379 || aux -> posicion == 398 || aux -> posicion == 399 ){
+            desastre = "deforestacion";
+            ndesafio = 3;
+        }
+
+        InsertarUltimoDesastreAmbiental(desastre, ndesafio, &aux, &desastrenatural);
+
+        aux = aux -> prox;
+
+    }
+
+}
+
+void InsertarClases(Jugadores **jugador){ //PROCEDIMIENTO PARA AGREGAR CLASES A LOS JUGADORES;
 
     Jugadores *personaje = *jugador;
 
@@ -317,8 +452,15 @@ void InsertarClases(Jugadores **jugador){
 
             clase = "MECANICO MACGYVER";
             descripcion = "Un mecanico ingenioso que puede arreglar cualquier cosa con un poco de astucia y piezas de repuesto improvisadas";
-            habilidad = "Tienes un gran poder de conviccion, tus acciones de conservacion son mas efectivas.";
+            habilidad = "Con su gran ingenio, tiene la capacidad de generar artefactos a partir de basura utilizandola como material reciclado.";
 
+        }
+
+        if (personaje -> njugador == 4){
+            
+            clase = "BOTANICO";
+            descripcion = "Un experto en plantas y flores que puede encontrar curas y remedios en la naturaleza, y tiene el conocimiento para saber donde y cuando plantar distintias especies de plantas.";
+            habilidad = "Tiene la capacidad de saber cuales plantas sembrar dependiendo del ambiente en donde se encuentre.";
         }
 
         InsertarUltimoClase(&clasepersonaje, personaje, clase, descripcion, habilidad);
@@ -330,27 +472,25 @@ void InsertarClases(Jugadores **jugador){
 void CrearPersonajes (Jugadores **jugadores){
 
     string nick;
-    int jugadorN;
-    int num_jugadores;
+    string num_jugadores;
+    int numjugadores;
 
     while (ValidarNJugadores(num_jugadores) == false){
 
         cout << "Ingresar numero de jugadores: ";
         cin >> num_jugadores;
 
-        if (num_jugadores < 1 || num_jugadores > 4)
+        if (ValidarNJugadores(num_jugadores) != true)
             cout << "ERROR, ingresar un numero entero entre 1 y 4!" << endl;
+        else
+            numjugadores = CantidadJugadores(num_jugadores);
 
     }
 
-    for (int i = 1; i <= num_jugadores; i++){
-
-         srand(time(NULL));
-
-        jugadorN = (rand() % 4) + 1;
+    for (int i = 1; i <= numjugadores; i++){
 
         cout << "-------------------------------" << endl;
-        cout << "Jugador " << jugadorN << endl;
+        cout << "Jugador " << i << endl;
         cout << "-------------------------------" << endl;
 
         cout << "Ingresar un nick name: ";
@@ -358,42 +498,14 @@ void CrearPersonajes (Jugadores **jugadores){
 
         cout << "-------------------------------" << endl;
 
-        InsertarUltimoPlayer(*&jugadores, nick, jugadorN);
+        InsertarUltimoPlayer(*&jugadores, nick, i);
         InsertarClases(*&jugadores);
 
     }
 
 }
 
-// Procedimiento para imprimir el tablero;
-
-void MostrarTablero (Casillas* casilla){
-
-    int count = 0;
-    Casillas *aux = casilla;
-
-    cout << "------------------------- TABLERO -------------------------" << endl;
-
-    while (aux -> prox != NULL){
-
-        count += 1;
-        cout << aux -> region << "  ";
-
-        if (count == 20){
-            cout << endl;
-            count = 0;
-        }
-
-        aux = aux -> prox;
-
-    }
-
-    cout << "-----------------------------------------------------------" << endl;
-
-  }
-
-// PROCEDIMIENTO PARA CREAR EL TABLERO
-void CrearTablero(Casillas **casillas){
+void CrearTablero(Casillas **casillas){ // PROCEDIMIENTO PARA CREAR EL TABLERO;
 
     string region;
     int a = 0;
@@ -425,7 +537,7 @@ void CrearTablero(Casillas **casillas){
         }
 
         else{
-            region = "0";
+            region = char(220);
         }
 
         posicion = a;
@@ -434,6 +546,33 @@ void CrearTablero(Casillas **casillas){
         a++;
     }
 }
+
+void MostrarTablero (Casillas* casilla){ // Procedimiento para imprimir el tablero;
+
+    int count = 0;
+    Casillas *aux = casilla;
+
+    cout << "------------------------- TABLERO -------------------------" << endl;
+
+    while (aux -> prox != NULL){
+
+        count += 1;
+        cout << aux -> region << "  ";
+
+        if (count == 20){
+            cout << endl;
+            count = 0;
+        }
+
+        aux = aux -> prox;
+
+    }
+
+    cout << "-----------------------------------------------------------" << endl;
+    cout << "M - PAUSA | ENTER - LANZAR" << endl;
+    cout << "-----------------------------------------------------------" << endl;
+
+  }
 
 void InsertarPersonajes(Casillas **casilla, Jugadores **personajes, int posicion){
 
@@ -547,12 +686,12 @@ void MoverJugadorUno(Casillas **casilla, Jugadores **personajes, int dado){
             mover -> region = "I";
         }
 
-        else if ( mover -> posicion == 2 || mover -> posicion == 3 || mover -> posicion == 4 || mover -> posicion == 5 || mover -> posicion == 6 || mover -> posicion == 7 || mover -> posicion == 8 || mover -> posicion == 9 || mover -> posicion == 10 || mover -> posicion == 11 || mover -> posicion == 12 || mover -> posicion == 13 || mover -> posicion == 14 || mover -> posicion == 15 || mover -> posicion == 16 || mover -> posicion == 17 || mover -> posicion == 22 || mover -> posicion == 23 || mover -> posicion == 24 || mover -> posicion == 25 || mover -> posicion == 26 || mover -> posicion == 27 || mover -> posicion == 28 || mover -> posicion == 29 || mover -> posicion == 30 || mover -> posicion ==31 || mover -> posicion == 32 || mover -> posicion == 33 || mover -> posicion == 34 || mover -> posicion == 35 || mover -> posicion == 36 || mover -> posicion == 37 ){
+        if ( mover -> posicion == 2 || mover -> posicion == 3 || mover -> posicion == 4 || mover -> posicion == 5 || mover -> posicion == 6 || mover -> posicion == 7 || mover -> posicion == 8 || mover -> posicion == 9 || mover -> posicion == 10 || mover -> posicion == 11 || mover -> posicion == 12 || mover -> posicion == 13 || mover -> posicion == 14 || mover -> posicion == 15 || mover -> posicion == 16 || mover -> posicion == 17 || mover -> posicion == 22 || mover -> posicion == 23 || mover -> posicion == 24 || mover -> posicion == 25 || mover -> posicion == 26 || mover -> posicion == 27 || mover -> posicion == 28 || mover -> posicion == 29 || mover -> posicion == 30 || mover -> posicion ==31 || mover -> posicion == 32 || mover -> posicion == 33 || mover -> posicion == 34 || mover -> posicion == 35 || mover -> posicion == 36 || mover -> posicion == 37 ){
             mover -> region = "A";
         }
 
         else if (mover -> posicion == 0 || mover -> posicion == 20){
-            dado++;
+            dado += 1;
         }
 
         while (i < dado){
@@ -569,33 +708,37 @@ void MoverJugadorUno(Casillas **casilla, Jugadores **personajes, int dado){
 
 }
 
-int main(){
+main(){
 
     Casillas *casillas = NULL;
     Jugadores *personajes = NULL;
     Jugadores *aux = NULL;
 
-    string region = "0", lanzar = "";
+    string opciones, region = "0", lanzar = "";
 
-    int opciones = 0, posicion = 0, turno = 1, dado;
+    int posicion = 0, dado;
 
-    bool juego = true, bol = false;
+    bool inicio, juego = true, bol = false;
 
-    while (opciones != 4){
+    // PANTALLA DE BIENVENIDA;
+
+    while (inicio != true){
+        inicio = PantallaInicio();     
+    }  
+
+    while (opciones != "2"){
 
         cout << "======================= MENU INICIO =======================" << endl;
 
         cout << "(1) Comenzar partida" << endl;
-        cout << "(2) Ver tablero" << endl;
-        cout << "(3) Crear personajes" << endl;
-        cout << "(4) Salir" << endl;
+        cout << "(2) Salir" << endl;
 
         cout << "===========================================================" << endl;
 
         cout << "Opcion: ";
         cin >> opciones;
 
-        if (opciones == 1){
+        if (opciones == "1"){
 
             CrearPersonajes(&personajes);
             InsertarClases(&personajes);
@@ -607,6 +750,7 @@ int main(){
             }
 
             aux = personajes;
+            int max = CantidadTurno(aux);
 
             while (juego == true){ 
             
@@ -619,50 +763,62 @@ int main(){
                     cout << "Presiona ENTER para tirar el dado: ";
                     cin >> lanzar;
 
-                    if (lanzar == "ENTER")
+                    if (lanzar == "M" || lanzar == "m"){
+
+                        string submenu;
+
+                        while (submenu != "2"){
+                            cout << "========================" << endl;
+                            cout << "          PAUSA         " << endl;
+                            cout << "========================" << endl;
+                            cout << "(1) Mostrar personaje" << endl;
+                            cout << "(2) Regresar al juego" << endl;
+                            cout << "========================" << endl;
+                            cout << "Opcion: ";
+                            cin >> submenu;
+
+                            if (submenu == "1")
+                                Mostrar1Personaje(aux, aux -> njugador);
+                        
+                            if (submenu == "2"){
+                                break;
+                            }
+                        }
+                    }
+
+                    if (lanzar == "ENTER" || lanzar == "enter")
                         bol = true;
+                    
+                    else
+                        cout << "ERROR, ingresar ENTER para lanzar el dado!" << endl;
+                    
                 }
 
                 dado = Dado(bol);
                 MostrarDado(dado);
 
-                turno++;
-                bol = false;
+                MoverJugadorUno(&aux -> Jugadores, &personajes, dado);
+
+                if ( Turno(aux) == max)
+                    aux -> proxPlayer = personajes;
+
                 aux = aux -> proxPlayer;
 
-                MoverJugadorUno(&aux -> Jugadores, &personajes, dado);
-                turno++;
+                bol = false;
 
-                if (turno >= 4){
-                    aux = personajes;
-                }
-    
             }
 
         }
 
-        if (opciones == 2){
-
-            if (ListaVaciaCasillas(casillas)){
-                CrearTablero(&casillas);
-                InsertarPersonajes(&casillas, &personajes, posicion);
-            }
-            
-            MostrarTablero(casillas);
-
-        }
-
-        if (opciones == 3){
-            CrearPersonajes(&personajes);
-            MostrarPersonajes(personajes);
-        }
-
-        if (opciones == 4){
+        if (opciones == "2"){
+            cout << "Hasta luego my friend" << endl;
             break;
         }
+
+        else
+            cout << "ERROR, ingresar un valor valido!" << endl;
     }
 
     getch();
 
-    return 0;
 }
